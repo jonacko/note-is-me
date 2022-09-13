@@ -5,6 +5,7 @@ const express = require("express");
 const path = require("path");
 const fs = require("fs");
 
+// to give each note a unique id
 const uuid = require('uuid');
 
 
@@ -26,10 +27,12 @@ app.use(express.urlencoded({ extended: true }));
 // Middlewear for static files
 app.use(express.static("public"));
 
+let notes = require("./db/db.json");
+
 
 
 //Middlewear for API router
-app.use("/api/notes", require("./middleware/api"));
+// app.use("/api/notes", require("./middleware/api"));
 
 // ****** HTML ROUTES ******
 
@@ -48,7 +51,37 @@ app.get("*", function (req, res) {
 
 // ****** API ROUTES ******
 
+// Display notes
+app.get("/api/notes", function (req, res) {
+    fs.readFile("db/db.json", "utf8", function (err, data) {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      res.json(notes);
+    });
+  });
 
+// Create new note
+app.post("/api/notes", function (req, res) {
+    let randLetter = String.fromCharCode(65 + Math.floor(Math.random() * 26));
+    let id = randLetter + Date.now();
+    let newNote = {
+      id: id,
+      title: req.body.title,
+      text: req.body.text,
+    };
+    console.log(typeof notes);
+    notes.push(newNote);
+    const stringifyNote = JSON.stringify(notes);
+    res.json(notes);
+    fs.writeFile("db/db.json", stringifyNote, (err) => {
+      if (err) console.log(err);
+      else {
+        console.log("Note successfully saved to db.json");
+      }
+    });
+  });
 
 // Starts server to begin listening
 
