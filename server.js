@@ -15,9 +15,10 @@ const PORT = process.env.PORT || 3000;
 
 // ****** Middlewear ***** 
 
-// Middlewear for parsing JSON 
+// Middlewear for parsing JSON  and url encoded from data
 // 'use' = a method to configure the middlewear - called every time a request is sent to the server
 app.use(express.json());
+app.use(express.urlencoded({extended: true }));
 
 // Middlewear for static files
 app.use(express.static('public'));
@@ -45,3 +46,7 @@ app.get("*", function (req, res) {
 app.listen(PORT, function () {
     console.log("App listening at PORT " + PORT);
 });
+
+// UUID - universally unique identifier
+// gives each note a unique ID
+
