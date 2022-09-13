@@ -1,4 +1,13 @@
 {
+  "name": "note-is-me",
+  "version": "1.0.0",
+  "description": "n web application for note taking, powered by Express.js",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "jonacko",
+  "license": "ISC",
   "dependencies": {
     "express": "^4.18.1"
   }
