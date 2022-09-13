@@ -5,6 +5,9 @@ const express = require("express");
 const path = require("path");
 const fs = require("fs");
 
+const uuid = require('uuid');
+
+
 // Port = a logical connection used by programs and services to exchange information (ranges from 65535)
 // common port nos = 80/443 = web pages; 21 = ftp; 25 = email
 // generally convention to use 4 digit no. higher than 1024 so it doesn't interfere with reserved ports.  3000 often used in Express - number is arbitrary
@@ -23,12 +26,15 @@ app.use(express.urlencoded({ extended: true }));
 // Middlewear for static files
 app.use(express.static("public"));
 
+
+
+//Middlewear for API router
+app.use("/api/notes", require("./middleware/api"));
+
+// ****** HTML ROUTES ******
+
 // Get route for notes page
 // AC: 'GET /notes' should return the notes.html file.
-
-// Middlewear for API router
-// app.use("/api/notes", require("./middleware/api"));
-
 app.get("/notes", function (req, res) {
   res.sendFile(path.join(__dirname, "/public/notes.html"));
 });
@@ -39,6 +45,10 @@ app.get("/notes", function (req, res) {
 app.get("*", function (req, res) {
   res.sendFile(path.join(__dirname, "/public/index.html"));
 });
+
+// ****** API ROUTES ******
+
+
 
 // Starts server to begin listening
 

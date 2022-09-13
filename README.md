@@ -8,3 +8,9 @@
 6. Create PORT variable
 7. Function to listen on Port 3000
 8. Gitignore file created to ignore node modules
+
+How to run:
+
+npm i express
+npm start
+http://localhost:3000/
