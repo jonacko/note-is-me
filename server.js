@@ -64,8 +64,11 @@ app.get("/api/notes", function (req, res) {
 
 // Create new note
 app.post("/api/notes", function (req, res) {
-    let randLetter = String.fromCharCode(65 + Math.floor(Math.random() * 26));
-    let id = randLetter + Date.now();
+
+// saves unique id using npm uuid
+    let id = uuid.v4();
+
+
     let newNote = {
       id: id,
       title: req.body.title,
@@ -78,10 +81,11 @@ app.post("/api/notes", function (req, res) {
     fs.writeFile("db/db.json", stringifyNote, (err) => {
       if (err) console.log(err);
       else {
-        console.log("Note successfully saved to db.json");
+        console.log("Note saved to db.json!");
       }
     });
   });
+
 
 // Starts server to begin listening
 
