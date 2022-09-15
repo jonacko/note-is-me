@@ -5,7 +5,7 @@ const express = require("express");
 const path = require("path");
 const fs = require("fs");
 
-// to give each note a unique id
+// to give each note a unique id (universally unique identifier)
 const uuid = require('uuid');
 
 
@@ -27,6 +27,7 @@ app.use(express.urlencoded({ extended: true }));
 // Middlewear for static files
 app.use(express.static("public"));
 
+// Creates variable for notes saved in db.json file
 let notes = require("./db/db.json");
 
 
@@ -34,12 +35,57 @@ let notes = require("./db/db.json");
 //Middlewear for API router
 // app.use("/api/notes", require("./middleware/api"));
 
-// ****** HTML ROUTES ******
+
+// ************ HTML ROUTES ************
 
 // Get route for notes page
 // AC: 'GET /notes' should return the notes.html file.
 app.get("/notes", function (req, res) {
   res.sendFile(path.join(__dirname, "/public/notes.html"));
+});
+
+
+
+// ************ API ROUTES ************
+
+// Display notes
+app.get("/api/notes", function (_req, res) {
+  // console.log('notes have been fetched');
+  fs.readFile("db/db.json", "utf8", function (err, note) {
+    console.log(note);
+    if (err) {
+      console.log(err);
+      return;
+    }
+    const data = JSON.parse(note);
+  
+    res.json(data);
+  });
+});
+
+// Create new note
+app.post("/api/notes", function (req, res) {
+
+
+  // saves unique id using npm uuid
+  let id = uuid.v4();
+
+
+  let newNote = {
+    id: id,
+    title: req.body.title,
+    text: req.body.text,
+  };
+  console.log(newNote);
+  notes.push(newNote);
+  const stringifyNote = JSON.stringify(notes);
+  res.json(notes);
+  fs.writeFile("db/db.json", stringifyNote, (err) => {
+    if (err) console.log(err);
+    else {
+      console.log("Note saved to db.json!");
+    }
+  });
 });
 
 // Get route for landing page
@@ -49,49 +95,9 @@ app.get("*", function (req, res) {
   res.sendFile(path.join(__dirname, "/public/index.html"));
 });
 
-// ****** API ROUTES ******
-
-// Display notes
-app.get("/api/notes", function (req, res) {
-    fs.readFile("db/db.json", "utf8", function (err, data) {
-      if (err) {
-        console.log(err);
-        return;
-      }
-      res.json(notes);
-    });
-  });
-
-// Create new note
-app.post("/api/notes", function (req, res) {
-
-// saves unique id using npm uuid
-    let id = uuid.v4();
-
-
-    let newNote = {
-      id: id,
-      title: req.body.title,
-      text: req.body.text,
-    };
-    console.log(typeof notes);
-    notes.push(newNote);
-    const stringifyNote = JSON.stringify(notes);
-    res.json(notes);
-    fs.writeFile("db/db.json", stringifyNote, (err) => {
-      if (err) console.log(err);
-      else {
-        console.log("Note saved to db.json!");
-      }
-    });
-  });
-
 
 // Starts server to begin listening
 
 app.listen(PORT, function () {
   console.log("App listening at PORT " + PORT);
 });
-
-// UUID - universally unique identifier
-// gives each note a unique ID

@@ -14,3 +14,6 @@ How to run:
 npm i express
 npm start
 http://localhost:3000/
+
+9. npm i uuid
+10. create uuid variable to give each note a unique id
