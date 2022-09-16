@@ -88,6 +88,29 @@ app.post("/api/notes", function (req, res) {
   });
 });
 
+// Delete note
+app.delete("/api/notes/:id", function (req, res) {
+console.log(req.params.id);
+  fs.readFile("db/db.json", "utf8", function (err, data) {
+    if (err){
+      console.log(err);
+    }
+    let updatedNotes = JSON.parse(data).filter((note) => {
+  
+      return note.id !== req.params.id;
+    });
+    notes = updatedNotes;
+    const stringifyNote = JSON.stringify(updatedNotes);
+    fs.writeFile("db/db.json", stringifyNote, (err) => {
+      if (err) console.log(err);
+      else {
+        console.log("Note successfully deleted from db.json");
+      }
+    });
+    res.json(stringifyNote);
+  });
+});
+
 // Get route for landing page
 // AC: 'GET *' should return the index.html file
 
