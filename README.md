@@ -4,6 +4,7 @@
 
 Image of deployed application:
 
+![image](https://user-images.githubusercontent.com/106882755/190900078-9c773504-e88a-4f90-bac8-e970c2359638.png)
 
 
 Contents:
@@ -17,7 +18,7 @@ Contents:
 
 This project was undertaken as a submission for a Birmingham University Bootcamp assignment, with a brief to create an application called Note Taker that can be used to write and save notes.  The user story and acceptance criteria is as follows:
 
-[image hgere]
+![image](https://user-images.githubusercontent.com/106882755/190900054-0c8254c4-645f-4fdb-82b5-a4f531bb9469.png)
 
 ## 2. Key features:
 
